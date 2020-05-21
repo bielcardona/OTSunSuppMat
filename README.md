@@ -1,4 +1,4 @@
-# Supplementary files for: 
+## Supplementary files for: 
 # "OTSun, a Python package for the optical analysis of solar-thermal collectors and photovoltaic cells with arbitrary geometry"
 ## By Gabriel Cardona and Ramon Pujol
 
