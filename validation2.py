@@ -22,65 +22,49 @@ def single_computation(*args):
     exp = otsun.Experiment(current_scene, l_s, number_of_rays)
     exp.run()
     print(f"Computed w={w}, theta={theta}, S/P={sp}")
-    return (w, exp.Th_energy, exp.Th_wavelength, exp.captured_energy_Th,
-            exp.PV_energy, exp.PV_wavelength, exp.captured_energy_PV, exp.PV_values)
+    return (w, exp.Th_energy, exp.Th_wavelength, exp.captured_energy_Th)
 
 
 # ---
 # Full parallel computation for a fixed angle and polarization
 # ---
 def full_computation():
-    p = Pool()
+    p = Pool(maxtasksperchild=1)
     wavelengths = np.arange(wavelength_ini, wavelength_end + 1E-4, wavelength_step)
     args_list = [(w,) for w in wavelengths]
     values = p.starmap(single_computation, args_list)
     # ---
     # Placeholders to collect data
     # ---
-    captured_energy_PV = 0.0
     captured_energy_Th = 0.0
     source_wavelength = []
     Th_energy = []
     Th_wavelength = []
-    Th_points_absorber = []
-    PV_energy = []
-    PV_wavelength = []
-    PV_values = []
-    ##
-    ## @Ramon: Els PV no s'empren per res... cal?
-    ##
     for value in values:
-        (w, exp_Th_energy, exp_Th_wavelength, exp_captured_energy_Th,
-         exp_PV_energy, exp_PV_wavelength, exp_captured_energy_PV, exp_PV_values) = value
+        (w, exp_Th_energy, exp_Th_wavelength, exp_captured_energy_Th) = value
         Th_energy.append(exp_Th_energy)
         Th_wavelength.append(exp_Th_wavelength)
-        PV_energy.append(exp_PV_energy)
-        PV_wavelength.append(exp_PV_wavelength)
         source_wavelength.append(w)
-        if exp_PV_values:
-            PV_values.append(exp_PV_values)
-        captured_energy_PV += exp_captured_energy_PV
         captured_energy_Th += exp_captured_energy_Th
 
     # ---
     # Save results in file
     # ---
-    if captured_energy_Th > 1E-9:
-        output_folder = 'output2'
-        try:
-            os.makedirs(output_folder)
-        except:
-            pass  # we suppose it already exists
+    output_folder = 'output2'
+    try:
+        os.makedirs(output_folder)
+    except:
+        pass  # we suppose it already exists
 
-        table_Th = otsun.make_histogram_from_experiment_results(
-            Th_wavelength, Th_energy, wavelength_step,
-            aperture_collector_Th, emitting_region.aperture
-        )
-        filename = (f"Th_spectral_efficiency_Glass_BK7_Ag_"
-                    f"{theta}_{sp}_{wavelength_ini}_{wavelength_end}_{number_of_rays}_rays.txt")
-        np.savetxt(os.path.join(output_folder, filename),
-                   table_Th, fmt=['%f', '%f'],
-                   header="#wavelength(nm) efficiency_Th_absorbed")
+    table_Th = otsun.make_histogram_from_experiment_results(
+        Th_wavelength, Th_energy, wavelength_step,
+        aperture_collector_Th, emitting_region.aperture
+    )
+    filename = (f"Th_spectral_efficiency_Glass_BK7_Ag_"
+                f"{theta}_{sp}_{wavelength_ini}_{wavelength_end}_{number_of_rays}_rays.txt")
+    np.savetxt(os.path.join(output_folder, filename),
+               table_Th, fmt=['%f', '%f'],
+               header="#wavelength(nm) efficiency_Th_absorbed")
 
 
 if __name__ == '__main__':
@@ -97,9 +81,9 @@ if __name__ == '__main__':
     otsun.TransparentSimpleLayer("Trans", 1.0)
     otsun.AbsorberSimpleLayer("Abs", 1.0)
     otsun.TwoLayerMaterial("Trans_Abs", "Trans", "Abs")
-    file_Glass = os.path.join('data','BK7_Schott.txt')
+    file_Glass = os.path.join('data', 'BK7_Schott.txt')
     otsun.WavelengthVolumeMaterial("Glass", file_Glass)
-    file_Ag = os.path.join('data','Ag_Yang.txt')
+    file_Ag = os.path.join('data', 'Ag_Yang.txt')
     otsun.MetallicSpecularLayer("Ag", file_Ag)
     otsun.ReflectorSpecularLayer("Mirror", 1)
 
