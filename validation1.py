@@ -16,7 +16,7 @@ from multiprocessing import Pool
 # Single parallelizable computation (fixed angles)
 # ---
 def single_computation(*args):
-    ph, th = args
+    (ph, th) = args
     main_direction = otsun.polar_to_cartesian(ph, th) * -1.0  # Sun direction vector
     current_scene = otsun.Scene(sel)
     tracking = otsun.MultiTracking(main_direction, current_scene)
@@ -27,34 +27,24 @@ def single_computation(*args):
     exp.run()
     tracking.undo_movements()
     print(f"Computed ph={ph}, th={th}")
-    if aperture_collector_Th != 0.0:
-        efficiency_from_source_Th = (exp.captured_energy_Th / aperture_collector_Th) / (
-                exp.number_of_rays / exp.light_source.emitting_region.aperture)
-    else:
-        efficiency_from_source_Th = 0.0
-    if aperture_collector_PV != 0.0:
-        efficiency_from_source_PV = (exp.captured_energy_PV / aperture_collector_PV) / (
-                exp.number_of_rays / exp.light_source.emitting_region.aperture)
-    else:
-        efficiency_from_source_PV = 0.0
-    return ph, th, efficiency_from_source_Th, efficiency_from_source_PV
+    efficiency_from_source_Th = (exp.captured_energy_Th / aperture_collector_Th) / (
+        exp.number_of_rays / exp.light_source.emitting_region.aperture)
+    return ph, th, efficiency_from_source_Th
 
 
 # ---
 # Full parallel computation
 # ---
-def full_computation():
+def full_computation(ph):
     p = Pool(maxtasksperchild=1)
-    args_list = [(ph, th)
-                 for ph in np.arange(phi_ini, phi_end, phi_step)
-                 for th in np.arange(theta_ini, theta_end, theta_step)]
+    args_list = [(ph, th) for th in np.arange(theta_ini, theta_end, theta_step)]
     values = p.starmap(single_computation, args_list)
 
     # ---
     # Save results in file
     # ---
     output_folder = 'output1'
-    output_file = os.path.join(output_folder, 'efficiency_results.txt')
+    output_file = os.path.join(output_folder, f'efficiency_results_{int(ph)}.txt')
     try:
         os.makedirs(output_folder)
     except:
@@ -62,13 +52,12 @@ def full_computation():
 
     with open(output_file, 'w') as f:
         f.write(f"{aperture_collector_Th * 1E-6} # Collector Th aperture in m2\n")
-        f.write(f"{aperture_collector_PV * 1E-6} # Collector PV aperture in m2\n")
         f.write(f"{power_emitted_by_m2} # Source power emitted by m2\n")
         f.write(f"{number_of_rays} # Rays emitted per sun position\n")
-        f.write("# phi theta efficiency_from_source_Th efficiency_from_source_PV\n")
+        f.write("# phi theta efficiency_from_source_Th\n")
         for value in values:
-            (ph, th, efficiency_from_source_Th, efficiency_from_source_PV) = value
-            f.write(f"{ph:.3f} {th:.3f} {efficiency_from_source_Th:.6f} {efficiency_from_source_PV:.6f}\n")
+            (ph, th, efficiency_from_source_Th) = value
+            f.write(f"{ph:.3f} {th:.3f} {efficiency_from_source_Th:.6f}\n")
 
 
 if __name__ == '__main__':
@@ -92,19 +81,18 @@ if __name__ == '__main__':
     # Definition of parameters for the simulation
     # ---
     # Angles
-    phi_ini = 90.0
+    phi_ini = 0.0
     phi_end = 90.0
     phi_end = phi_end + 1.E-4
-    phi_step = 5.0
+    phi_step = 90.0
     theta_ini = 0.0
     theta_end = 90.0
     theta_end = theta_end + 1.E-4
     theta_step = 5.0
     # Number of rays to simulate
-    number_of_rays = 100000
+    number_of_rays = 100# 000
     # Optical parameters
     aperture_collector_Th = 11 * 0.5 * 32 * 1000000
-    aperture_collector_PV = 11 * 0.5 * 32 * 1000000
     CSR = 0.05
     direction_distribution = otsun.buie_distribution(CSR)
     data_file_spectrum = os.path.join('data', 'ASTMG173-direct.txt')
@@ -116,4 +104,5 @@ if __name__ == '__main__':
     # ---
     # Launch computations
     # ---
-    full_computation()
+    for ph in np.arange(phi_ini, phi_end,  phi_step):
+        full_computation(ph)
