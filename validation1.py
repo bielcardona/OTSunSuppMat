@@ -44,7 +44,7 @@ def single_computation(*args):
 # Full parallel computation
 # ---
 def full_computation():
-    p = Pool()
+    p = Pool(maxtasksperchild=1)
     args_list = [(ph, th)
                  for ph in np.arange(phi_ini, phi_end, phi_step)
                  for th in np.arange(theta_ini, theta_end, theta_step)]
@@ -101,14 +101,12 @@ if __name__ == '__main__':
     theta_end = theta_end + 1.E-4
     theta_step = 5.0
     # Number of rays to simulate
-    number_of_rays = 100 # 000
+    number_of_rays = 100000
     # Optical parameters
     aperture_collector_Th = 11 * 0.5 * 32 * 1000000
     aperture_collector_PV = 11 * 0.5 * 32 * 1000000
     CSR = 0.05
-    Buie_model = otsun.buie_distribution(CSR)
-    direction_distribution = Buie_model
-    # for integral results three options: ASTMG173-direct (default option), ASTMG173-total, upload data_file_spectrum
+    direction_distribution = otsun.buie_distribution(CSR)
     data_file_spectrum = os.path.join('data', 'ASTMG173-direct.txt')
     light_spectrum = otsun.cdf_from_pdf_file(data_file_spectrum)
     power_emitted_by_m2 = otsun.integral_from_data_file(data_file_spectrum)
