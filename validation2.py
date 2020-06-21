@@ -33,6 +33,8 @@ def full_computation():
     wavelengths = np.arange(wavelength_ini, wavelength_end + 1E-4, wavelength_step)
     args_list = [(w,) for w in wavelengths]
     values = p.starmap(single_computation, args_list)
+    p.close()
+    p.join()
     # ---
     # Placeholders to collect data
     # ---

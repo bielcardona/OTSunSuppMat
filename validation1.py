@@ -39,6 +39,8 @@ def full_computation(ph):
     p = Pool(maxtasksperchild=1)
     args_list = [(ph, th) for th in np.arange(theta_ini, theta_end, theta_step)]
     values = p.starmap(single_computation, args_list)
+    p.close()
+    p.join()
 
     # ---
     # Save results in file
