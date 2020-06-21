@@ -90,7 +90,7 @@ if __name__ == '__main__':
     theta_end = theta_end + 1.E-4
     theta_step = 5.0
     # Number of rays to simulate
-    number_of_rays = 100# 000
+    number_of_rays = 100000
     # Optical parameters
     aperture_collector_Th = 11 * 0.5 * 32 * 1000000
     CSR = 0.05

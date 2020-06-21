@@ -97,7 +97,7 @@ if __name__ == '__main__':
     wavelength_end = 400.0
     wavelength_step = 2.0
     # Number of rays to simulate
-    number_of_rays = 50# 000
+    number_of_rays = 50000
     # Optical parameters
     aperture_collector_Th = doc.getObject("Trans_Abs").Shape.Faces[0].Area
     direction_distribution = None
