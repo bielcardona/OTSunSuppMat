@@ -64,7 +64,7 @@ if __name__ == '__main__':
     # ---
     # Load freecad file
     # ---
-    freecad_file = 'LFR_Focus.FCStd'
+    freecad_file = 'LFR.FCStd'
     FreeCAD.openDocument(freecad_file)
     doc = FreeCAD.ActiveDocument
 

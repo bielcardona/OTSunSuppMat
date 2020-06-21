@@ -70,7 +70,7 @@ if __name__ == '__main__':
     # ---
     # Load freecad file
     # ---
-    freecad_file = 'Glass_Box_Metallic_Coating.FCStd'
+    freecad_file = 'mirror.FCStd'
     FreeCAD.openDocument(freecad_file)
     doc = FreeCAD.ActiveDocument
 
