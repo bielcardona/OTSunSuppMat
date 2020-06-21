@@ -7,10 +7,11 @@ The requirements to run these scripts are python 3.6 with the library `otsun` in
 The included files and folders are:
 
 * `validation1.py`: Script used to make the computations for the first validation of OTSun in the main paper.
-* `LFR_Focus.FCStd`: FreeCAD file defining the geometry of the optical system used in `validation1.py`.
-* `LFR_constant_materials.tnh`: Tonatiuh file defining the same geometry as in `LFR_Focus.FCStd`
+* `LFR.FCStd`: FreeCAD file defining the geometry of the optical system used in `validation1.py`.
+* `LFR.tnh`: Tonatiuh file defining the same geometry as in `LFR_Focus.FCStd`
 * `validation2.py`: Script used to make the computations for the second validation of OTSun in the main paper.
-* `Glass_Box_Metallic_Coating.FCStd`: FreeCAD file defining the geometry of the optical system used in `validation2.py`.
+* `mirror.FCStd`: FreeCAD file defining the geometry of the optical system used in `validation2.py`.
 * `data`: Folder with data for specification of parametric materials and solar spectrum.
+* `output1` and `output2`: Folders with the outputs of `validation1.py` and `validation2.py`, respectively.
 
-To reproduce the computations, simply run the scripts `validation1.py` and `validation2.py`. The results will be found in the created folders `output1` and `output2`, respectively.
+To reproduce the computations, simply run the scripts `validation1.py` and `validation2.py`. Note that this will overwrite the contents of the folders `output1` and `output2`, respectively.
