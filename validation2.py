@@ -30,7 +30,6 @@ def single_computation(*args):
 # ---
 def full_computation():
     p = Pool(maxtasksperchild=1)
-    wavelengths = np.arange(wavelength_ini, wavelength_end + 1E-4, wavelength_step)
     args_list = [(w,) for w in wavelengths]
     values = p.starmap(single_computation, args_list)
     p.close()
@@ -95,15 +94,14 @@ if __name__ == '__main__':
     phi = 0.0
     thetas = [45.0, 80.0]
     # Wavelengths
-    wavelength_ini = 300.0
-    wavelength_end = 400.0
-    wavelength_step = 2.0
+    wavelengths_first_set = np.arange(300.0, 400.01, 2.0)
+    wavelengths_second_set = np.arange(320.0, 1000.01, 20.0)
+    wavelengths = np.append(wavelengths_first_set, wavelengths_second_set)
     # Number of rays to simulate
     number_of_rays = 50000
     # Optical parameters
     aperture_collector_Th = doc.getObject("Trans_Abs").Shape.Faces[0].Area
     direction_distribution = None
-    internal_quantum_efficiency = 1.0
     # Scene
     sel = doc.Objects
     current_scene = otsun.Scene(sel)

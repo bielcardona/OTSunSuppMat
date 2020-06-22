@@ -77,7 +77,6 @@ if __name__ == '__main__':
     otsun.ReflectorSpecularLayer("Mir2", 0.91)
     otsun.AbsorberSimpleLayer("Abs", 0.95)
     otsun.TransparentSimpleLayer("Trans", 0.965)
-    otsun.OpaqueSimpleLayer("Opa")
 
     # ---
     # Definition of parameters for the simulation
