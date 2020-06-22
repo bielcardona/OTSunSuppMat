@@ -103,7 +103,6 @@ if __name__ == '__main__':
     # Optical parameters
     aperture_collector_Th = doc.getObject("Trans_Abs").Shape.Faces[0].Area
     direction_distribution = None
-    internal_quantum_efficiency = 1.0
     # Scene
     sel = doc.Objects
     current_scene = otsun.Scene(sel)
