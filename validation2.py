@@ -62,7 +62,7 @@ def full_computation():
         Th_wavelength, Th_energy, wavelength_step,
         aperture_collector_Th, emitting_region.aperture
     )
-    filename = (f"Th_spectral_efficiency_Glass_BK7_Ag_{int(theta)}_{int(sp)}.txt")
+    filename = (f"Th_spectral_efficiency_Glass_BK7_Ag_{int(theta)}_{sp}.txt")
     np.savetxt(os.path.join(output_folder, filename),
                table_Th, fmt=['%f', '%f'],
                header="#wavelength(nm) efficiency_Th_absorbed")
