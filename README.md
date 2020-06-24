@@ -8,7 +8,7 @@ The included files and folders are:
 
 * `validation1.py`: Script used to make the computations for the first validation of OTSun in the main paper.
 * `LFR.FCStd`: FreeCAD file defining the geometry of the optical system used in `validation1.py`.
-* `LFR.tnh`: Tonatiuh file defining the same geometry as in `LFR_Focus.FCStd`
+* `LFR.tnh`: Tonatiuh file defining the same geometry as in `LFR.FCStd`
 * `validation2.py`: Script used to make the computations for the second validation of OTSun in the main paper.
 * `mirror.FCStd`: FreeCAD file defining the geometry of the optical system used in `validation2.py`.
 * `data`: Folder with data for specification of parametric materials and solar spectrum.
