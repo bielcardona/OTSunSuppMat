@@ -6,11 +6,14 @@ The requirements to run these scripts are python 3.6 with the library `otsun` in
 
 The included files and folders are:
 
+* `ParabolicTrough.FCStd`: FreeCAD file showing how materials are identified by the labels of the objects.
 * `validation1.py`: Script used to make the computations for the first validation of OTSun in the main paper.
 * `LFR.FCStd`: FreeCAD file defining the geometry of the optical system used in `validation1.py`.
 * `LFR.tnh`: Tonatiuh file defining the same geometry as in `LFR.FCStd`
+* `LFR_output.FCStd`: FreeCAD file obtained as output by OTSun with some simulated rays.
 * `validation2.py`: Script used to make the computations for the second validation of OTSun in the main paper.
 * `mirror.FCStd`: FreeCAD file defining the geometry of the optical system used in `validation2.py`.
+* `mirror_output.FCStd`: FreeCAD file obtained as output by OTSun with some simulated rays.
 * `data`: Folder with data for specification of parametric materials and solar spectrum.
 * `output1` and `output2`: Folders with the outputs of `validation1.py` and `validation2.py`, respectively.
 
